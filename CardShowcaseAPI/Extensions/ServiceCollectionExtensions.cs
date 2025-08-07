@@ -4,7 +4,6 @@ using CardShowcaseAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System.Text;
 
 namespace CardShowcaseAPI.Extensions
 {
@@ -27,8 +26,6 @@ namespace CardShowcaseAPI.Extensions
         }
 
         /// <summary>
-        /// Настройка JWT-аутентификации
-        /// </summary>        /// <summary>
         /// Настройка JWT-аутентификации с SigningConfigurations и несколькими аудиториями
         /// </summary>
         public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)

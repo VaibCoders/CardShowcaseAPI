@@ -7,32 +7,45 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CardShowcaseAPI.Controllers;
 
+/// <summary>
+/// Контроллер для работы с глобальными моделями
+/// </summary>
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
 public class GlobalModelController : ControllerBase
 {
     private readonly IGlobalModelService _service;
-    private readonly ILogger<GlobalModelController> _logger;
 
-    public GlobalModelController(IGlobalModelService service, ILogger<GlobalModelController> logger)
+    public GlobalModelController(IGlobalModelService service)
     {
         _service = service;
-        _logger = logger;
     }
 
+    /// <summary>
+    /// Получить все глобальные модели
+    /// </summary>
     [HttpGet]
     public async Task<ActionResult<List<GlobalModel>>> GetAll() =>
         Ok(await _service.GetAllAsync());
 
+    /// <summary>
+    /// Получить модель по ID
+    /// </summary>
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<GlobalModel?>> GetById(Guid id) =>
         await _service.GetByIdAsync(id) is GlobalModel model ? Ok(model) : NotFound();
 
+    /// <summary>
+    /// Получить модели пользователя
+    /// </summary>
     [HttpGet("user/{userId:guid}")]
     public async Task<ActionResult<List<GlobalModel>>> GetByUser(Guid userId) =>
         Ok(await _service.GetByUserAsync(userId));
 
+    /// <summary>
+    /// Создание, обновление или удаление модели
+    /// </summary>
     [HttpPost]
     public async Task<ActionResult<GlobalModel?>> Process([FromBody] GlobalModelModifyModel model)
     {

@@ -23,6 +23,9 @@ public class ErrorHandlingMiddleware
         _environment = environment;
     }
 
+    /// <summary>
+    /// Обработка запроса и перехват исключений
+    /// </summary>
     public async Task InvokeAsync(HttpContext context)
     {
         try
@@ -36,6 +39,9 @@ public class ErrorHandlingMiddleware
         }
     }
 
+    /// <summary>
+    /// Формирование ответа об ошибке
+    /// </summary>
     private async Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
         context.Response.ContentType = "application/json; charset=utf-8";
