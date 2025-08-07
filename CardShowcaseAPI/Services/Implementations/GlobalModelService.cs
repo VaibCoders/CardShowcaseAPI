@@ -198,6 +198,8 @@ public class GlobalModelService : IGlobalModelService
             switch (model.Action)
             {
                 case GlobalModelAction.Create:
+                    // При создании игнорируем переданный ID и генерируем новый
+                    model.IDGlobalModel = null;
                     return await CreateAsync(model);
 
                 case GlobalModelAction.Update:
