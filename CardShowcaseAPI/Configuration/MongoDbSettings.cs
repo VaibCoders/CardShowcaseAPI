@@ -1,4 +1,4 @@
-namespace CustomHTMLCardAPI.Configuration;
+namespace CardShowcaseAPI.Configuration;
 
 /// <summary>
 /// Настройки подключения к MongoDB
@@ -18,5 +18,5 @@ public class MongoDbSettings
     /// <summary>
     /// Имя коллекции для карточек
     /// </summary>
-    public string CollectionName { get; set; } = "CustomHTMLCards";
+    public string CollectionName { get; set; } = "ShowcaseCards";
 }

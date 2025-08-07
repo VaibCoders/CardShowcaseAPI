@@ -1,7 +1,7 @@
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace CustomHTMLCardAPI.Configuration
+namespace CardShowcaseAPI.Configuration
 {
     /// <summary>
     /// Конфигурация подписи JWT — держит ключ и креденшелы

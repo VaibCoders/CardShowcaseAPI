@@ -1,42 +1,42 @@
-using CustomHTMLCardAPI.Models.Domain;
-using CustomHTMLCardAPI.Models.DTOs;
+using CardShowcaseAPI.Models.Domain;
+using CardShowcaseAPI.Models.DTOs;
 
-namespace CustomHTMLCardAPI.Services.Interfaces;
+namespace CardShowcaseAPI.Services.Interfaces;
 
 /// <summary>
 /// Интерфейс сервиса для работы с HTML карточками
 /// </summary>
-public interface ICustomHTMLCardService
+public interface IShowcaseCardService
 {
     /// <summary>
     /// Получить все карточки
     /// </summary>
-    Task<List<CustomHTMLCard>> GetAllAsync();
+    Task<List<ShowcaseCard>> GetAllAsync();
     
     /// <summary>
     /// Получить карточку по ID
     /// </summary>
-    Task<CustomHTMLCard?> GetByIdAsync(Guid id);
+    Task<ShowcaseCard?> GetByIdAsync(Guid id);
     
     /// <summary>
     /// Получить карточки пользователя
     /// </summary>
-    Task<List<CustomHTMLCard>> GetByUserAsync(Guid userId);
+    Task<List<ShowcaseCard>> GetByUserAsync(Guid userId);
     
     /// <summary>
     /// Получить публичные карточки
     /// </summary>
-    Task<List<CustomHTMLCard>> GetPublicAsync();
+    Task<List<ShowcaseCard>> GetPublicAsync();
     
     /// <summary>
     /// Создать новую карточку
     /// </summary>
-    Task<CustomHTMLCard> CreateAsync(CustomHTMLCardModifyModel model);
+    Task<ShowcaseCard> CreateAsync(ShowcaseCardModifyModel model);
     
     /// <summary>
     /// Обновить карточку
     /// </summary>
-    Task<CustomHTMLCard?> UpdateAsync(CustomHTMLCardModifyModel model);
+    Task<ShowcaseCard?> UpdateAsync(ShowcaseCardModifyModel model);
     
     /// <summary>
     /// Удалить карточку
@@ -46,10 +46,10 @@ public interface ICustomHTMLCardService
     /// <summary>
     /// Поиск карточек по ключевым словам
     /// </summary>
-    Task<List<CustomHTMLCard>> SearchAsync(string keywords);
+    Task<List<ShowcaseCard>> SearchAsync(string keywords);
     
     /// <summary>
     /// Обработать карточку в зависимости от действия
     /// </summary>
-    Task<CustomHTMLCard?> ProcessAsync(CustomHTMLCardModifyModel model);
+    Task<ShowcaseCard?> ProcessAsync(ShowcaseCardModifyModel model);
 }

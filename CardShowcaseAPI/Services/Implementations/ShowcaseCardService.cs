@@ -1,24 +1,24 @@
-using CustomHTMLCardAPI.Configuration;
-using CustomHTMLCardAPI.Models.Domain;
-using CustomHTMLCardAPI.Models.DTOs;
-using CustomHTMLCardAPI.Models.Enums;
-using CustomHTMLCardAPI.Services.Interfaces;
+using CardShowcaseAPI.Configuration;
+using CardShowcaseAPI.Models.Domain;
+using CardShowcaseAPI.Models.DTOs;
+using CardShowcaseAPI.Models.Enums;
+using CardShowcaseAPI.Services.Interfaces;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
-namespace CustomHTMLCardAPI.Services.Implementations;
+namespace CardShowcaseAPI.Services.Implementations;
 
 /// <summary>
 /// Сервис для работы с HTML карточками в MongoDB
 /// </summary>
-public class CustomHTMLCardService : ICustomHTMLCardService
+public class ShowcaseCardService : IShowcaseCardService
 {
-    private readonly IMongoCollection<CustomHTMLCard> _cardsCollection;
-    private readonly ILogger<CustomHTMLCardService> _logger;
+    private readonly IMongoCollection<ShowcaseCard> _cardsCollection;
+    private readonly ILogger<ShowcaseCardService> _logger;
 
-    public CustomHTMLCardService(
+    public ShowcaseCardService(
         IOptions<MongoDbSettings> mongoDbSettings,
-        ILogger<CustomHTMLCardService> logger)
+        ILogger<ShowcaseCardService> logger)
     {
         _logger = logger;
         
@@ -26,7 +26,7 @@ public class CustomHTMLCardService : ICustomHTMLCardService
         {
             var mongoClient = new MongoClient(mongoDbSettings.Value.ConnectionString);
             var mongoDatabase = mongoClient.GetDatabase(mongoDbSettings.Value.DatabaseName);
-            _cardsCollection = mongoDatabase.GetCollection<CustomHTMLCard>(mongoDbSettings.Value.CollectionName);
+            _cardsCollection = mongoDatabase.GetCollection<ShowcaseCard>(mongoDbSettings.Value.CollectionName);
             
             // Создаем индексы при инициализации
             CreateIndexes();
@@ -47,8 +47,8 @@ public class CustomHTMLCardService : ICustomHTMLCardService
     {
         try
         {
-            var indexKeys = Builders<CustomHTMLCard>.IndexKeys;
-            var indexes = new List<CreateIndexModel<CustomHTMLCard>>
+            var indexKeys = Builders<ShowcaseCard>.IndexKeys;
+            var indexes = new List<CreateIndexModel<ShowcaseCard>>
             {
                 new(indexKeys.Ascending(x => x.IDUserCreator)),
                 new(indexKeys.Ascending(x => x.IsPublic)),
@@ -65,7 +65,7 @@ public class CustomHTMLCardService : ICustomHTMLCardService
         }
     }
 
-    public async Task<List<CustomHTMLCard>> GetAllAsync()
+    public async Task<List<ShowcaseCard>> GetAllAsync()
     {
         try
         {
@@ -80,11 +80,11 @@ public class CustomHTMLCardService : ICustomHTMLCardService
         }
     }
 
-    public async Task<CustomHTMLCard?> GetByIdAsync(Guid id)
+    public async Task<ShowcaseCard?> GetByIdAsync(Guid id)
     {
         try
         {
-            return await _cardsCollection.Find(x => x.IDCustomHTMLCard == id)
+            return await _cardsCollection.Find(x => x.IDShowcaseCard == id)
                 .FirstOrDefaultAsync();
         }
         catch (Exception ex)
@@ -94,7 +94,7 @@ public class CustomHTMLCardService : ICustomHTMLCardService
         }
     }
 
-    public async Task<List<CustomHTMLCard>> GetByUserAsync(Guid userId)
+    public async Task<List<ShowcaseCard>> GetByUserAsync(Guid userId)
     {
         try
         {
@@ -109,7 +109,7 @@ public class CustomHTMLCardService : ICustomHTMLCardService
         }
     }
 
-    public async Task<List<CustomHTMLCard>> GetPublicAsync()
+    public async Task<List<ShowcaseCard>> GetPublicAsync()
     {
         try
         {
@@ -124,13 +124,13 @@ public class CustomHTMLCardService : ICustomHTMLCardService
         }
     }
 
-    public async Task<CustomHTMLCard> CreateAsync(CustomHTMLCardModifyModel model)
+    public async Task<ShowcaseCard> CreateAsync(ShowcaseCardModifyModel model)
     {
         try
         {
-            var card = new CustomHTMLCard
+            var card = new ShowcaseCard
             {
-                IDCustomHTMLCard = model.IDCustomHTMLCard ?? Guid.NewGuid(),
+                IDShowcaseCard = model.IDShowcaseCard ?? Guid.NewGuid(),
                 CardDescription = model.CardDescription,
                 CardBody = model.CardBody,
                 CardImage = model.CardImage,
@@ -144,7 +144,7 @@ public class CustomHTMLCardService : ICustomHTMLCardService
 
             await _cardsCollection.InsertOneAsync(card);
             _logger.LogInformation("Создана карточка {CardId} пользователем {UserId}", 
-                card.IDCustomHTMLCard, card.IDUserCreator);
+                card.IDShowcaseCard, card.IDUserCreator);
             
             return card;
         }
@@ -155,18 +155,18 @@ public class CustomHTMLCardService : ICustomHTMLCardService
         }
     }
 
-    public async Task<CustomHTMLCard?> UpdateAsync(CustomHTMLCardModifyModel model)
+    public async Task<ShowcaseCard?> UpdateAsync(ShowcaseCardModifyModel model)
     {
         try
         {
-            if (model.IDCustomHTMLCard == null)
+            if (model.IDShowcaseCard == null)
             {
                 _logger.LogWarning("Попытка обновления карточки без указания ID");
                 return null;
             }
 
-            var filter = Builders<CustomHTMLCard>.Filter.Eq(x => x.IDCustomHTMLCard, model.IDCustomHTMLCard.Value);
-            var update = Builders<CustomHTMLCard>.Update
+            var filter = Builders<ShowcaseCard>.Filter.Eq(x => x.IDShowcaseCard, model.IDShowcaseCard.Value);
+            var update = Builders<ShowcaseCard>.Update
                 .Set(x => x.CardDescription, model.CardDescription)
                 .Set(x => x.CardBody, model.CardBody)
                 .Set(x => x.CardImage, model.CardImage)
@@ -175,7 +175,7 @@ public class CustomHTMLCardService : ICustomHTMLCardService
                 .Set(x => x.IsPublic, model.IsPublic)
                 .Set(x => x.UpdatedAt, DateTime.UtcNow);
 
-            var options = new FindOneAndUpdateOptions<CustomHTMLCard>
+            var options = new FindOneAndUpdateOptions<ShowcaseCard>
             {
                 ReturnDocument = ReturnDocument.After
             };
@@ -184,18 +184,18 @@ public class CustomHTMLCardService : ICustomHTMLCardService
             
             if (result != null)
             {
-                _logger.LogInformation("Обновлена карточка {CardId}", model.IDCustomHTMLCard);
+                _logger.LogInformation("Обновлена карточка {CardId}", model.IDShowcaseCard);
             }
             else
             {
-                _logger.LogWarning("Карточка {CardId} не найдена для обновления", model.IDCustomHTMLCard);
+                _logger.LogWarning("Карточка {CardId} не найдена для обновления", model.IDShowcaseCard);
             }
             
             return result;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Ошибка при обновлении карточки: {CardId}", model.IDCustomHTMLCard);
+            _logger.LogError(ex, "Ошибка при обновлении карточки: {CardId}", model.IDShowcaseCard);
             throw;
         }
     }
@@ -204,7 +204,7 @@ public class CustomHTMLCardService : ICustomHTMLCardService
     {
         try
         {
-            var result = await _cardsCollection.DeleteOneAsync(x => x.IDCustomHTMLCard == id);
+            var result = await _cardsCollection.DeleteOneAsync(x => x.IDShowcaseCard == id);
             
             if (result.DeletedCount > 0)
             {
@@ -222,14 +222,14 @@ public class CustomHTMLCardService : ICustomHTMLCardService
         }
     }
 
-    public async Task<List<CustomHTMLCard>> SearchAsync(string keywords)
+    public async Task<List<ShowcaseCard>> SearchAsync(string keywords)
     {
         try
         {
-            var filter = Builders<CustomHTMLCard>.Filter.Or(
-                Builders<CustomHTMLCard>.Filter.Regex(x => x.CardDescription, 
+            var filter = Builders<ShowcaseCard>.Filter.Or(
+                Builders<ShowcaseCard>.Filter.Regex(x => x.CardDescription, 
                     new MongoDB.Bson.BsonRegularExpression(keywords, "i")),
-                Builders<CustomHTMLCard>.Filter.Regex(x => x.CardKeywords, 
+                Builders<ShowcaseCard>.Filter.Regex(x => x.CardKeywords, 
                     new MongoDB.Bson.BsonRegularExpression(keywords, "i"))
             );
 
@@ -248,7 +248,7 @@ public class CustomHTMLCardService : ICustomHTMLCardService
             throw;
         }
     }
-public async Task<CustomHTMLCard?> ProcessAsync(CustomHTMLCardModifyModel model)
+public async Task<ShowcaseCard?> ProcessAsync(ShowcaseCardModifyModel model)
 {
     try
     {
@@ -256,10 +256,10 @@ public async Task<CustomHTMLCard?> ProcessAsync(CustomHTMLCardModifyModel model)
 
         switch (model.Action)
         {
-            case CustomHTMLCardAction.Create:
+            case ShowcaseCardAction.Create:
                 return await CreateAsync(model);
 
-            case CustomHTMLCardAction.Update:
+            case ShowcaseCardAction.Update:
             {
                 var updated = await UpdateAsync(model);
                 if (updated != null)
@@ -269,19 +269,19 @@ public async Task<CustomHTMLCard?> ProcessAsync(CustomHTMLCardModifyModel model)
 
                 _logger.LogInformation(
                     "Обновление карточки {CardId} не нашло записи — выполняем создание новой", 
-                    model.IDCustomHTMLCard);
+                    model.IDShowcaseCard);
 
                 // Сбрасываем ID, чтобы CreateAsync сгенерировал новый
-                model.IDCustomHTMLCard = null;
+                model.IDShowcaseCard = null;
                 return await CreateAsync(model);
             }
 
-            case CustomHTMLCardAction.Delete:
-                if (model.IDCustomHTMLCard.HasValue)
+            case ShowcaseCardAction.Delete:
+                if (model.IDShowcaseCard.HasValue)
                 {
-                    var success = await DeleteAsync(model.IDCustomHTMLCard.Value);
+                    var success = await DeleteAsync(model.IDShowcaseCard.Value);
                     return success 
-                        ? new CustomHTMLCard { IDCustomHTMLCard = model.IDCustomHTMLCard.Value } 
+                        ? new ShowcaseCard { IDShowcaseCard = model.IDShowcaseCard.Value } 
                         : null;
                 }
                 _logger.LogWarning("Попытка удаления карточки без указания ID");

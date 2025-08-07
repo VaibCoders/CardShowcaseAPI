@@ -1,20 +1,20 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using CustomHTMLCardAPI.Models.Enums;
+using CardShowcaseAPI.Models.Enums;
 
-namespace CustomHTMLCardAPI.Models.Domain;
+namespace CardShowcaseAPI.Models.Domain;
 
 /// <summary>
 /// Модель HTML карточки для хранения в MongoDB
 /// </summary>
-public class CustomHTMLCard
+public class ShowcaseCard
 {
     /// <summary>
     /// Уникальный идентификатор карточки
     /// </summary>
     [BsonId]
     [BsonRepresentation(BsonType.String)]
-    public Guid IDCustomHTMLCard { get; set; }
+    public Guid IDShowcaseCard { get; set; }
 
     /// <summary>
     /// Описание карточки
@@ -44,7 +44,7 @@ public class CustomHTMLCard
     /// Тип карточки
     /// </summary>
     [BsonElement("CardType")]
-    public CustomHTMLCardType CardType { get; set; }
+    public ShowcaseCardType CardType { get; set; }
 
     /// <summary>
     /// Признак публичной карточки

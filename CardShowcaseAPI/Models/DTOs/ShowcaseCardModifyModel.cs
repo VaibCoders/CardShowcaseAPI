@@ -1,21 +1,21 @@
-using CustomHTMLCardAPI.Models.Enums;
+using CardShowcaseAPI.Models.Enums;
 
-namespace CustomHTMLCardAPI.Models.DTOs;
+namespace CardShowcaseAPI.Models.DTOs;
 
 /// <summary>
 /// Модель для создания/изменения карточки
 /// </summary>
-public class CustomHTMLCardModifyModel
+public class ShowcaseCardModifyModel
 {
     /// <summary>
     /// Тип операции над карточкой
     /// </summary>
-    public CustomHTMLCardAction Action { get; set; }
+    public ShowcaseCardAction Action { get; set; }
     
     /// <summary>
     /// ID карточки (для обновления/удаления)
     /// </summary>
-    public Guid? IDCustomHTMLCard { get; set; }
+    public Guid? IDShowcaseCard { get; set; }
     
     /// <summary>
     /// Описание карточки
@@ -40,7 +40,7 @@ public class CustomHTMLCardModifyModel
     /// <summary>
     /// Тип карточки
     /// </summary>
-    public CustomHTMLCardType CardType { get; set; }
+    public ShowcaseCardType CardType { get; set; }
     
     /// <summary>
     /// Признак публичной карточки

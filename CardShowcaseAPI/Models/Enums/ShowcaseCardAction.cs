@@ -1,9 +1,9 @@
-namespace CustomHTMLCardAPI.Models.Enums;
+namespace CardShowcaseAPI.Models.Enums;
 
 /// <summary>
 /// Действие над карточкой
 /// </summary>
-public enum CustomHTMLCardAction
+public enum ShowcaseCardAction
 {
     /// <summary>
     /// Создание карточки

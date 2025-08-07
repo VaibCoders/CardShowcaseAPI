@@ -1,5 +1,5 @@
-using CustomHTMLCardAPI.Extensions;
-using CustomHTMLCardAPI.Middleware;
+using CardShowcaseAPI.Extensions;
+using CardShowcaseAPI.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,7 +31,7 @@ app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.UseSwagger();
 app.UseSwaggerUI(c =>
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "CustomHTMLCardAPI v1"));
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "CardShowcaseAPI v1"));
 
 app.UseHttpsRedirection();
 app.UseCors("AllowAllDev");

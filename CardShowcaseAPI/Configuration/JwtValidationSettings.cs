@@ -1,4 +1,4 @@
-namespace CustomHTMLCardAPI.Configuration;
+namespace CardShowcaseAPI.Configuration;
 
 /// <summary>
 /// Настройки валидации JWT токенов

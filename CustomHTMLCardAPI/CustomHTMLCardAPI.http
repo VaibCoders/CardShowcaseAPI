@@ -1,6 +1,0 @@
-@CustomHTMLCardAPI_HostAddress = http://localhost:5004
-
-GET {{CustomHTMLCardAPI_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

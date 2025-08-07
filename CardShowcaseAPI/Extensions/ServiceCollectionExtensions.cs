@@ -1,12 +1,12 @@
-using CustomHTMLCardAPI.Configuration;
-using CustomHTMLCardAPI.Services.Implementations;
-using CustomHTMLCardAPI.Services.Interfaces;
+using CardShowcaseAPI.Configuration;
+using CardShowcaseAPI.Services.Implementations;
+using CardShowcaseAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 
-namespace CustomHTMLCardAPI.Extensions
+namespace CardShowcaseAPI.Extensions
 {
     public static class ServiceCollectionExtensions
     {
@@ -20,7 +20,7 @@ namespace CustomHTMLCardAPI.Extensions
             // Настройки JWT
             services.Configure<JwtValidationSettings>(configuration.GetSection("JwtValidation"));
             // Сервис работы с карточками
-            services.AddScoped<ICustomHTMLCardService, CustomHTMLCardService>();
+            services.AddScoped<IShowcaseCardService, ShowcaseCardService>();
             return services;
         }
 
@@ -74,7 +74,7 @@ namespace CustomHTMLCardAPI.Extensions
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "CustomHTMLCardAPI", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "CardShowcaseAPI", Version = "v1" });
 
                 var jwtScheme = new OpenApiSecurityScheme
                 {

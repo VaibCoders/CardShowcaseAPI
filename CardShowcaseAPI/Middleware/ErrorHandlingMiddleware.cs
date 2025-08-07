@@ -1,8 +1,8 @@
 using System.Net;
 using System.Text.Json;
-using CustomHTMLCardAPI.Models.DTOs;
+using CardShowcaseAPI.Models.DTOs;
 
-namespace CustomHTMLCardAPI.Middleware;
+namespace CardShowcaseAPI.Middleware;
 
 /// <summary>
 /// Middleware для глобальной обработки ошибок

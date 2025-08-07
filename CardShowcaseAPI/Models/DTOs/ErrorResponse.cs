@@ -1,4 +1,4 @@
-namespace CustomHTMLCardAPI.Models.DTOs;
+namespace CardShowcaseAPI.Models.DTOs;
 
 /// <summary>
 /// Модель ответа об ошибке

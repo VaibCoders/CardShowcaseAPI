@@ -1,9 +1,9 @@
-namespace CustomHTMLCardAPI.Models.Enums;
+namespace CardShowcaseAPI.Models.Enums;
 
 /// <summary>
 /// Тип HTML карточки
 /// </summary>
-public enum CustomHTMLCardType
+public enum ShowcaseCardType
 {
     /// <summary>
     /// Стандартная карточка
