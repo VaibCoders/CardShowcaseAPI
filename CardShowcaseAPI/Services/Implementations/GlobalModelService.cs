@@ -60,6 +60,9 @@ public class GlobalModelService : IGlobalModelService
         }
     }
 
+    /// <summary>
+    /// Получить все глобальные модели
+    /// </summary>
     public async Task<List<GlobalModel>> GetAllAsync()
     {
         try
@@ -75,6 +78,9 @@ public class GlobalModelService : IGlobalModelService
         }
     }
 
+    /// <summary>
+    /// Найти глобальную модель по идентификатору
+    /// </summary>
     public async Task<GlobalModel?> GetByIdAsync(Guid id)
     {
         try
@@ -89,6 +95,9 @@ public class GlobalModelService : IGlobalModelService
         }
     }
 
+    /// <summary>
+    /// Получить глобальные модели пользователя
+    /// </summary>
     public async Task<List<GlobalModel>> GetByUserAsync(Guid userId)
     {
         try
@@ -104,6 +113,9 @@ public class GlobalModelService : IGlobalModelService
         }
     }
 
+    /// <summary>
+    /// Создать новую глобальную модель
+    /// </summary>
     public async Task<GlobalModel> CreateAsync(GlobalModelModifyModel model)
     {
         try
@@ -129,6 +141,9 @@ public class GlobalModelService : IGlobalModelService
         }
     }
 
+    /// <summary>
+    /// Обновить существующую глобальную модель
+    /// </summary>
     public async Task<GlobalModel?> UpdateAsync(GlobalModelModifyModel model)
     {
         try
@@ -170,6 +185,9 @@ public class GlobalModelService : IGlobalModelService
         }
     }
 
+    /// <summary>
+    /// Удалить глобальную модель
+    /// </summary>
     public async Task<bool> DeleteAsync(Guid id)
     {
         try
@@ -190,6 +208,9 @@ public class GlobalModelService : IGlobalModelService
         }
     }
 
+    /// <summary>
+    /// Обработать модель в зависимости от действия
+    /// </summary>
     public async Task<GlobalModel?> ProcessAsync(GlobalModelModifyModel model)
     {
         try

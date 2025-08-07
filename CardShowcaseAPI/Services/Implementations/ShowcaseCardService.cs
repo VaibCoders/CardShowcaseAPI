@@ -65,6 +65,9 @@ public class ShowcaseCardService : IShowcaseCardService
         }
     }
 
+    /// <summary>
+    /// Получить все карточки
+    /// </summary>
     public async Task<List<ShowcaseCard>> GetAllAsync()
     {
         try
@@ -80,6 +83,9 @@ public class ShowcaseCardService : IShowcaseCardService
         }
     }
 
+    /// <summary>
+    /// Найти карточку по идентификатору
+    /// </summary>
     public async Task<ShowcaseCard?> GetByIdAsync(Guid id)
     {
         try
@@ -94,6 +100,9 @@ public class ShowcaseCardService : IShowcaseCardService
         }
     }
 
+    /// <summary>
+    /// Получить карточки пользователя
+    /// </summary>
     public async Task<List<ShowcaseCard>> GetByUserAsync(Guid userId)
     {
         try
@@ -109,6 +118,9 @@ public class ShowcaseCardService : IShowcaseCardService
         }
     }
 
+    /// <summary>
+    /// Получить публичные карточки
+    /// </summary>
     public async Task<List<ShowcaseCard>> GetPublicAsync()
     {
         try
@@ -124,6 +136,9 @@ public class ShowcaseCardService : IShowcaseCardService
         }
     }
 
+    /// <summary>
+    /// Создать новую карточку
+    /// </summary>
     public async Task<ShowcaseCard> CreateAsync(ShowcaseCardModifyModel model)
     {
         try
@@ -155,6 +170,9 @@ public class ShowcaseCardService : IShowcaseCardService
         }
     }
 
+    /// <summary>
+    /// Обновить существующую карточку
+    /// </summary>
     public async Task<ShowcaseCard?> UpdateAsync(ShowcaseCardModifyModel model)
     {
         try
@@ -200,6 +218,9 @@ public class ShowcaseCardService : IShowcaseCardService
         }
     }
 
+    /// <summary>
+    /// Удалить карточку
+    /// </summary>
     public async Task<bool> DeleteAsync(Guid id)
     {
         try
@@ -222,6 +243,9 @@ public class ShowcaseCardService : IShowcaseCardService
         }
     }
 
+    /// <summary>
+    /// Поиск карточек по ключевым словам
+    /// </summary>
     public async Task<List<ShowcaseCard>> SearchAsync(string keywords)
     {
         try
@@ -248,55 +272,59 @@ public class ShowcaseCardService : IShowcaseCardService
             throw;
         }
     }
-public async Task<ShowcaseCard?> ProcessAsync(ShowcaseCardModifyModel model)
-{
-    try
+
+    /// <summary>
+    /// Обработать карточку в зависимости от действия
+    /// </summary>
+    public async Task<ShowcaseCard?> ProcessAsync(ShowcaseCardModifyModel model)
     {
-        _logger.LogInformation("Обработка карточки с действием: {Action}", model.Action);
-
-        switch (model.Action)
+        try
         {
-            case ShowcaseCardAction.Create:
-                return await CreateAsync(model);
+            _logger.LogInformation("Обработка карточки с действием: {Action}", model.Action);
 
-            case ShowcaseCardAction.Update:
+            switch (model.Action)
             {
-                var updated = await UpdateAsync(model);
-                if (updated != null)
+                case ShowcaseCardAction.Create:
+                    return await CreateAsync(model);
+
+                case ShowcaseCardAction.Update:
                 {
-                    return updated;
+                    var updated = await UpdateAsync(model);
+                    if (updated != null)
+                    {
+                        return updated;
+                    }
+
+                    _logger.LogInformation(
+                        "Обновление карточки {CardId} не нашло записи — выполняем создание новой",
+                        model.IDShowcaseCard);
+
+                    // Сбрасываем ID, чтобы CreateAsync сгенерировал новый
+                    model.IDShowcaseCard = null;
+                    return await CreateAsync(model);
                 }
 
-                _logger.LogInformation(
-                    "Обновление карточки {CardId} не нашло записи — выполняем создание новой", 
-                    model.IDShowcaseCard);
+                case ShowcaseCardAction.Delete:
+                    if (model.IDShowcaseCard.HasValue)
+                    {
+                        var success = await DeleteAsync(model.IDShowcaseCard.Value);
+                        return success
+                            ? new ShowcaseCard { IDShowcaseCard = model.IDShowcaseCard.Value }
+                            : null;
+                    }
+                    _logger.LogWarning("Попытка удаления карточки без указания ID");
+                    return null;
 
-                // Сбрасываем ID, чтобы CreateAsync сгенерировал новый
-                model.IDShowcaseCard = null;
-                return await CreateAsync(model);
+                default:
+                    _logger.LogWarning("Неизвестное действие: {Action}", model.Action);
+                    return null;
             }
-
-            case ShowcaseCardAction.Delete:
-                if (model.IDShowcaseCard.HasValue)
-                {
-                    var success = await DeleteAsync(model.IDShowcaseCard.Value);
-                    return success 
-                        ? new ShowcaseCard { IDShowcaseCard = model.IDShowcaseCard.Value } 
-                        : null;
-                }
-                _logger.LogWarning("Попытка удаления карточки без указания ID");
-                return null;
-
-            default:
-                _logger.LogWarning("Неизвестное действие: {Action}", model.Action);
-                return null;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Ошибка при обработке карточки с действием: {Action}", model.Action);
+            throw;
         }
     }
-    catch (Exception ex)
-    {
-        _logger.LogError(ex, "Ошибка при обработке карточки с действием: {Action}", model.Action);
-        throw;
-    }
-}
 
 }
