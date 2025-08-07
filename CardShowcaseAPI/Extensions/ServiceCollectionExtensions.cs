@@ -21,6 +21,8 @@ namespace CardShowcaseAPI.Extensions
             services.Configure<JwtValidationSettings>(configuration.GetSection("JwtValidation"));
             // Сервис работы с карточками
             services.AddScoped<IShowcaseCardService, ShowcaseCardService>();
+            // Сервис работы с глобальными моделями
+            services.AddScoped<IGlobalModelService, GlobalModelService>();
             return services;
         }
 

@@ -19,4 +19,9 @@ public class MongoDbSettings
     /// Имя коллекции для карточек
     /// </summary>
     public string CollectionName { get; set; } = "ShowcaseCards";
+
+    /// <summary>
+    /// Имя коллекции для глобальных моделей
+    /// </summary>
+    public string GlobalModelCollectionName { get; set; } = "GlobalModels";
 }
